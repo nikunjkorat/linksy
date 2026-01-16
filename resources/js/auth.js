@@ -1,10 +1,14 @@
-$(document).on('submit', '#loginForm', function (e) {
+// AJAX Login Form Submission
+
+$(document).find('#loginForm').on('submit', function (e) {
+
     e.preventDefault();
 
     const form = $(this);
-    const btn = $('#loginBtn');
+    const btn = form.find('#loginBtn');
 
     // Reset UI
+
     $('.invalid-feedback').text('');
     $('.form-control').removeClass('is-invalid');
     $('#loginError').addClass('d-none').text('');
@@ -16,7 +20,9 @@ $(document).on('submit', '#loginForm', function (e) {
         method: 'POST',
         data: form.serialize(),
         success(response) {
-            window.location.href = response.redirect;
+            if (response.redirect) {
+                window.location.href = response.redirect;
+            }
         },
         error(xhr) {
             if (xhr.status === 422) {

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Invitation extends Model
 {
     protected $fillable = [
-        'company_id', 
-        'email', 
+        'company_id',
+        'email',
         'role',
-        'token', 
-        'expires_at', 
+        'token',
+        'expires_at',
         'created_by',
         'accepted_at'
     ];

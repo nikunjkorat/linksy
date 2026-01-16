@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 class InvitationController extends Controller
 {
 
+    // Display the specified invitation.
+
     public function show(string $token)
     {
         $invite = $this->resolveInvitation($token);
@@ -35,7 +37,7 @@ class InvitationController extends Controller
 
         if ($existingUser) {
 
-            // force login first
+            // Force login first
 
             return redirect()
                 ->route('login')
@@ -49,8 +51,12 @@ class InvitationController extends Controller
 
     }
 
+    // Accept invitation for existing user.
+
     public function accept(Request $request, string $token)
     {
+        // Resolve invitation
+
         $invite = $this->resolveInvitation($token);
 
         $user = User::findOrFail(Auth::id());
@@ -65,10 +71,15 @@ class InvitationController extends Controller
             abort(403, 'User already belongs to another company.');
         }
 
+        // Update user record
+
         $user->update([
             'company_id' => $invite->company_id,
             'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
+
+        // Mark invitation as accepted
 
         $invite->update([
             'accepted_at' => now(),
@@ -82,12 +93,18 @@ class InvitationController extends Controller
 
     }
 
+    // Complete invitation for new user.
+
     public function complete(Complete $request, string $token)
     {
+
+        // Resolve invitation
 
         $invite = $this->resolveInvitation($token);
 
         $validated = $request->validated();
+
+        // Create user account
 
         $user = User::create([
             'name' => $validated['name'],
@@ -99,9 +116,13 @@ class InvitationController extends Controller
             'email_verified_at' => now(),
         ]);
 
+        // Mark invitation as accepted
+
         $invite->update([
             'accepted_at' => now(),
         ]);
+
+        // Log in the new user
 
         Auth::login($user);
 
@@ -112,14 +133,15 @@ class InvitationController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified invitation.
-     */
+    // Helper to resolve invitation by raw token.
 
     protected function resolveInvitation(string $rawToken): Invitation
     {
+
+        // Fetch all unaccepted, expired invitations
+
         $invitations = Invitation::whereNull('accepted_at')
-            ->where('expires_at', '>', now())
+            ->isExpired()
             ->get();
 
         foreach ($invitations as $invite) {

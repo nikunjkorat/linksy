@@ -1,3 +1,7 @@
+// Company Management JS
+
+// Initialize Bootstrap Modals
+
 const modalEl = document.getElementById('companyModal');
 
 let companyModal = null;
@@ -16,7 +20,11 @@ if(deleteModalEl){
 
 let currentCompanyUid = null;
 
+// Company Form Handling
+
 const form = $(document).find("#companyForm");
+
+// Reset Form
 
 function resetForm() {
     form[0].reset();
@@ -26,24 +34,36 @@ function resetForm() {
     currentCompanyUid = null;
 }
 
+// Set Create Mode
+
 function setCreateMode() {
+
     currentCompanyUid = null;
 
     form.attr("action", "/superadmin/companies");
     form.find('[name="_method"]').val("POST");
 
     $(document).find(".companyModalLabel").text("Create Company");
+
     form.find('#adminInviteSection').show();
+
     toggleAdminInviteFields();
+
     companyModal.show();
+
 }
+
+// Create Company Button Click
 
 $(document).on("click", "#createCompanyBtn", function (e) {
     resetForm();
     setCreateMode();
 });
 
+// Set Edit Mode
+
 function setEditMode(uid, name) {
+
     currentCompanyUid = uid;
 
     form.attr("action", `/superadmin/companies/${uid}`);
@@ -59,7 +79,10 @@ function setEditMode(uid, name) {
 
 }
 
+// Edit Company Button Click
+
 $(document).on("click", ".edit-company", function (e) {
+
     const row = $(this).closest("tr");
 
     const uid = row.data("uid");
@@ -67,12 +90,16 @@ $(document).on("click", ".edit-company", function (e) {
 
     resetForm();
     setEditMode(uid, name);
+
 });
 
+// Company Create / Update Form Submission
+
 form.on("submit", function (e) {
+
     e.preventDefault();
 
-    const btn = $("#companySubmitBtn");
+    const btn = form.find("#companySubmitBtn");
 
     $(".invalid-feedback").text("");
     $(".form-control").removeClass("is-invalid");
@@ -102,10 +129,14 @@ form.on("submit", function (e) {
     });
 });
 
+// Delete Company Handling
+
 $(document).on('click', '.delete-company', function () {
     currentCompanyUid = $(this).closest('tr').data('uid');
     deleteModal.show();
 });
+
+// Confirm Delete Company
 
 $(document).on('click', '#confirmDeleteCompany', function () {
     const btn = $(this);
@@ -118,13 +149,14 @@ $(document).on('click', '#confirmDeleteCompany', function () {
         success(response) {
             deleteModal.hide();
             loadCompanies(window.location.href);
-
         },
         complete() {
             btn.prop('disabled', false).text('Delete');
         }
     });
 });
+
+// Load Companies List
 
 function loadCompanies(url) {
 
@@ -155,6 +187,8 @@ $(document).on('click', '.pagination-link', function (e) {
 
 });
 
+// Admin Invite Fields Toggle
+
 function toggleAdminInviteFields() {
 
     const skip = $('#skip_invite').is(':checked');
@@ -171,6 +205,6 @@ function toggleAdminInviteFields() {
     }
 }
 
-// bind once
+// Bind once
 
 $('#skip_invite').on('change', toggleAdminInviteFields);

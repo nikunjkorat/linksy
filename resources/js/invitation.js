@@ -1,18 +1,20 @@
+// AJAX Invitation Form Submissions
+
+// Accept Invitation Form
+
 $(document).find('#acceptInviteForm').on('submit', function (e) {
 
     e.preventDefault();
 
     const form = $(this);
-    const url = form.attr('action');
-    const method = form.attr('method') || 'POST';
 
-    const btn = $("#acceptInviteForm button[type='submit']");
+    const btn = form.find("button[type='submit']");
 
     btn.prop("disabled", true).text("Accepting...");
 
     $.ajax({
-        url: url,
-        method: method,
+        url: form.attr('action'),
+        method: 'POST',
         data: form.serialize(),
         success(response) {
             if (response.redirect) {
@@ -29,15 +31,15 @@ $(document).find('#acceptInviteForm').on('submit', function (e) {
 
 });
 
-$('#setPasswordForm').on('submit', function (e) {
+// Set Password Form
+
+$(document).find('#setPasswordForm').on('submit', function (e) {
 
     e.preventDefault();
 
     const form = $(this);
-    const url = form.attr('action');
-    const method = form.attr('method') || 'POST';
 
-    const btn = $("#setPasswordForm button[type='submit']");
+    const btn = form.find("button[type='submit']");
 
     $(".invalid-feedback").text("");
     $(".form-control").removeClass("is-invalid");
@@ -45,8 +47,8 @@ $('#setPasswordForm').on('submit', function (e) {
     btn.prop("disabled", true).text("Accepting...");
 
     $.ajax({
-        url: url,
-        method: method,
+        url: form.attr('action'),
+        method: 'POST',
         data: form.serialize(),
         success(response) {
             if (response.redirect) {
@@ -62,6 +64,42 @@ $('#setPasswordForm').on('submit', function (e) {
     });
 
 });
+
+// Invite Admin Form
+
+$(document).find('#inviteAdminModal form').on('submit', function (e) {
+
+    e.preventDefault();
+
+    const form = $(this);
+
+    const btn = form.find("button[type='submit']");
+
+    $(".invalid-feedback").text("");
+    $(".form-control").removeClass("is-invalid");
+
+    btn.prop("disabled", true).text("Sending...");
+
+    $.ajax({
+        url: form.attr('action'),
+        method: 'POST',
+        data: form.serialize(),
+        success(response) {
+            if (response.redirect) {
+                window.location.href = response.redirect;
+            }
+        },
+        error(xhr) {
+            handleAjaxError(xhr, form);
+        },
+        complete() {
+            btn.prop("disabled", false).text("Send Invitation");
+        },
+    });
+
+});
+
+// Common AJAX Error Handler
 
 function handleAjaxError(xhr, form) {
 

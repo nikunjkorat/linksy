@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,13 +23,15 @@ class AuthController extends Controller
      * Handle AJAX login
      */
 
-    public function login(LoginRequest $request)
+    public function login(Login $request)
     {
 
-        if (! Auth::attempt($request->validated())) {
+        if (!Auth::attempt($request->validated())) {
+
             return response()->json([
                 'message' => 'Invalid email or password.',
             ], 401);
+
         }
 
         $request->session()->regenerate();
@@ -37,6 +39,7 @@ class AuthController extends Controller
         return response()->json([
             'redirect' => route('dashboard'),
         ]);
+
     }
 
     /**

@@ -21,6 +21,7 @@
                     <td>
                         <button class="btn btn-sm btn-warning edit-company">Edit</button>
                         <button class="btn btn-sm btn-danger delete-company">Delete</button>
+                        <a href="{{ route('superadmin.companies.overview.index', $company) }}" class="btn btn-sm btn-info show-company">Show</a>
                     </td>
                 </tr>
             @endforeach
@@ -74,7 +75,7 @@
         </nav>
 
     </div>
-    
+
 @else
     <div class="alert alert-info">
         No companies found.

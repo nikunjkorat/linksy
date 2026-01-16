@@ -23,17 +23,17 @@
 
                         <div class="mb-3">
                             <label>Name</label>
-                            <input name="name" class="form-control">
+                            <input name="name" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label>Password</label>
-                            <input name="password" type="password" class="form-control">
+                            <input name="password" type="password" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label>Confirm Password</label>
-                            <input name="password_confirmation" type="password" class="form-control">
+                            <input name="password_confirmation" type="password" class="form-control" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">

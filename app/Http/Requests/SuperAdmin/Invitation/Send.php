@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\SuperAdmin\Invitation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class Send extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,6 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'password' => 'required|string',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please enter a valid email address.',
-            'password.required' => 'Password is required.',
         ];
     }
 }

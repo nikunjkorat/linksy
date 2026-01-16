@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
+// Authentication routes
+
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
@@ -28,7 +30,11 @@ Route::middleware(['auth', 'role:super_admin'])
     ->name('superadmin.')
     ->group(function () {
 
+    // Dashboard
+
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Company Management
 
     Route::get('/companies', [CompanyController::class, 'index'])
             ->name('companies.index');
@@ -41,6 +47,24 @@ Route::middleware(['auth', 'role:super_admin'])
 
     Route::delete('/companies/{company}', [CompanyController::class, 'destroy'])
             ->name('companies.destroy');
+
+    Route::get('/companies/{company}', [CompanyController::class, 'show'])
+        ->name('companies.show');
+
+    // Company Admins (Secondary Invite Flow)
+
+    Route::get('/companies/{company}/overview',
+        [CompanyController::class, 'companyOverview']
+    )->name('companies.overview.index');
+
+    Route::get('/companies/{company}/admins',
+        [CompanyController::class, 'companyAdmins']
+    )->name('companies.admins.index');
+
+    Route::post('/companies/{company}/admins/invite',
+        [CompanyController::class, 'inviteCompanyAdmin']
+    )->name('companies.admins.invite');
+
 });
 
 // Invitation acceptance

@@ -76,4 +76,18 @@ class User extends Authenticatable
     {
         return ! is_null($this->company_id);
     }
+
+    public function dashboardRoute(): string
+    {
+        if ($this->isSuperAdmin()) {
+            return 'superadmin.dashboard';
+        }
+
+        if ($this->isAdmin()) {
+            return 'admin.dashboard';
+        }
+
+        return 'member.dashboard';
+    }
+
 }
