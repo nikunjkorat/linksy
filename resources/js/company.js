@@ -1,8 +1,18 @@
 const modalEl = document.getElementById('companyModal');
-const companyModal = new bootstrap.Modal(modalEl);
+
+let companyModal = null;
+
+if(modalEl){
+    companyModal = new bootstrap.Modal(modalEl);
+}
 
 const deleteModalEl = document.getElementById('deleteCompanyModal');
-const deleteModal = new bootstrap.Modal(deleteModalEl);
+
+let deleteModal = null;
+
+if(deleteModalEl){
+    deleteModal = new bootstrap.Modal(deleteModalEl);
+}
 
 let currentCompanyUid = null;
 
@@ -23,7 +33,8 @@ function setCreateMode() {
     form.find('[name="_method"]').val("POST");
 
     $(document).find(".companyModalLabel").text("Create Company");
-
+    form.find('#adminInviteSection').show();
+    toggleAdminInviteFields();
     companyModal.show();
 }
 
@@ -41,6 +52,11 @@ function setEditMode(uid, name) {
     form.find('[name="name"]').val(name);
 
     $(document).find(".companyModalLabel").text("Edit Company");
+
+    form.find('#adminInviteSection').hide();
+
+    companyModal.show();
+
 }
 
 $(document).on("click", ".edit-company", function (e) {
@@ -51,8 +67,6 @@ $(document).on("click", ".edit-company", function (e) {
 
     resetForm();
     setEditMode(uid, name);
-
-    companyModal.show();
 });
 
 form.on("submit", function (e) {
@@ -60,11 +74,14 @@ form.on("submit", function (e) {
 
     const btn = $("#companySubmitBtn");
 
+    $(".invalid-feedback").text("");
+    $(".form-control").removeClass("is-invalid");
+
     btn.prop("disabled", true).text("Saving...");
 
     $.ajax({
         url: form.attr("action"),
-        method: "POST", // Laravel will read _method
+        method: "POST",
         data: form.serialize(),
         success(response) {
             companyModal.hide();
@@ -135,5 +152,25 @@ $(document).on('click', '.pagination-link', function (e) {
     if (!url) return;
 
     loadCompanies(url);
-    
+
 });
+
+function toggleAdminInviteFields() {
+
+    const skip = $('#skip_invite').is(':checked');
+
+    if (skip) {
+        $('#admin_email')
+            .val('')
+            .prop('disabled', true)
+            .removeClass('is-invalid');
+
+        $('#adminEmailError').text('');
+    } else {
+        $('#admin_email').prop('disabled', false);
+    }
+}
+
+// bind once
+
+$('#skip_invite').on('change', toggleAdminInviteFields);

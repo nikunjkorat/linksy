@@ -6,6 +6,7 @@ use App\Http\Controllers\Member\DashboardController as MemberDashboardController
 use App\Http\Controllers\RedirectByRoleController;
 use App\Http\Controllers\SuperAdmin\CompanyController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
+use App\Http\Controllers\SuperAdmin\InvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -32,15 +33,23 @@ Route::middleware(['auth', 'role:super_admin'])
     Route::get('/companies', [CompanyController::class, 'index'])
             ->name('companies.index');
 
-        Route::post('/companies', [CompanyController::class, 'store'])
+    Route::post('/companies', [CompanyController::class, 'store'])
             ->name('companies.store');
 
-        Route::put('/companies/{company}', [CompanyController::class, 'update'])
+    Route::put('/companies/{company}', [CompanyController::class, 'update'])
             ->name('companies.update');
 
-        Route::delete('/companies/{company}', [CompanyController::class, 'destroy'])
+    Route::delete('/companies/{company}', [CompanyController::class, 'destroy'])
             ->name('companies.destroy');
 });
+
+// Invitation acceptance
+
+Route::get('/invitations/{token}', [InvitationController::class, 'show'])->name('invitations.show');
+
+Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept'])->name('invitations.accept');
+
+Route::post('/invitations/{token}/complete', [InvitationController::class, 'complete'])->name('invitations.complete');
 
 // Admin routes
 

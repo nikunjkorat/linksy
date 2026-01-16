@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Requests\SuperAdmin\Company;
+namespace App\Http\Requests\SuperAdmin\Invitation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Store extends FormRequest
+class Complete extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-
     public function authorize(): bool
     {
         return true;
@@ -20,13 +19,11 @@ class Store extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:2|max:255|unique:companies,name',
-            'skip_invite' => 'nullable|in:on,off',
-            'admin_email' => 'required_if:skip_invite,off|email',
+            'name' => 'required|string|max:255',
+            'password' => 'required|min:8|confirmed',
         ];
     }
 }

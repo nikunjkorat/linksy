@@ -16,7 +16,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#faqs">FAQs</a>
                 </li>
-                @if (auth()->user()->isSuperAdmin())
+                @if (auth()->user()?->isSuperAdmin())
                     <a class="nav-link {{ request()->routeIs('superadmin.companies.*') ? 'active fw-semibold' : '' }}" href="{{ route('superadmin.companies.index') }}">
                         Companies
                     </a>
