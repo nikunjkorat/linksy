@@ -10,7 +10,14 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
+
     use HasFactory, Notifiable;
+
+    const ROLE_SUPER_ADMIN = 'super_admin';
+
+    const ROLE_ADMIN = 'admin';
+
+    const ROLE_MEMBER = 'member';
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'company_id',
     ];
 
     /**
@@ -34,15 +43,37 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Relationships
      *
-     * @return array<string, string>
      */
-    protected function casts(): array
+
+    public function company()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Role helpers
+     *
+     */
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === self::ROLE_SUPER_ADMIN;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isMember(): bool
+    {
+        return $this->role === self::ROLE_MEMBER;
+    }
+
+    public function belongsToCompany(): bool
+    {
+        return ! is_null($this->company_id);
     }
 }
