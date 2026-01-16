@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\RedirectByRoleController;
+use App\Http\Controllers\SuperAdmin\CompanyController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +22,24 @@ Route::middleware('auth')->group(function () {
 
 // SuperAdmin routes
 
-Route::middleware(['auth', 'role:super_admin'])->group(function () {
+Route::middleware(['auth', 'role:super_admin'])
+    ->prefix('superadmin')
+    ->name('superadmin.')
+    ->group(function () {
 
-    Route::get('/superadmin', [DashboardController::class, 'index'])
-        ->name('superadmin.dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/companies', [CompanyController::class, 'index'])
+            ->name('companies.index');
+
+        Route::post('/companies', [CompanyController::class, 'store'])
+            ->name('companies.store');
+
+        Route::put('/companies/{company}', [CompanyController::class, 'update'])
+            ->name('companies.update');
+
+        Route::delete('/companies/{company}', [CompanyController::class, 'destroy'])
+            ->name('companies.destroy');
 });
 
 // Admin routes
