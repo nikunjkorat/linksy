@@ -9,6 +9,7 @@ use App\Http\Controllers\SuperAdmin\CompanyController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\ShortUrlRedirectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -134,3 +135,8 @@ Route::middleware(['auth', 'role:member'])
         ->name('links.store');
 
 });
+
+// Short URL redirection route
+
+Route::middleware('throttle:60,1')->get('/{code}', ShortUrlRedirectController::class)
+    ->where('code', '[A-Za-z0-9]+');
