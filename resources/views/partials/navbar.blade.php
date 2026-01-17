@@ -4,7 +4,8 @@
         {{-- Brand --}}
 
         <a class="navbar-brand fw-bold" href="{{ route('landing') }}">
-            🔗 Linksy
+            <img src="{{ asset('images/logo.png') }}" alt="Linksy Logo" width="30" height="30" class="d-inline-block align-top">
+            Linksy
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
