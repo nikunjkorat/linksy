@@ -117,3 +117,35 @@ function handleAjaxError(xhr, form) {
     }
 
 }
+
+$(document).find('#inviteUserModal form').on('submit', function (e) {
+
+    e.preventDefault();
+
+    const form = $(this);
+
+    const btn = form.find("button[type='submit']");
+
+    $(".invalid-feedback").text("");
+    $(".form-control").removeClass("is-invalid");
+
+    btn.prop("disabled", true).text("Sending...");
+
+    $.ajax({
+        url: form.attr('action'),
+        method: 'POST',
+        data: form.serialize(),
+        success(response) {
+            if (response.redirect) {
+                window.location.href = response.redirect;
+            }
+        },
+        error(xhr) {
+            handleAjaxError(xhr, form);
+        },
+        complete() {
+            btn.prop("disabled", false).text("Send Invitation");
+        },
+    });
+
+});

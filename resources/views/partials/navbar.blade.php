@@ -50,6 +50,17 @@
                         </a>
                     @endif
 
+                    {{-- Admin --}}
+
+                    @if(auth()->user()->isAdmin())
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active fw-semibold' : '' }}"
+                               href="{{ route('admin.users.index') }}">
+                                Users
+                            </a>
+                        </li>
+                    @endif
+
                 @endauth
 
             </ul>

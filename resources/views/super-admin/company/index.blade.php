@@ -10,7 +10,7 @@
             </button>
         </div>
 
-        <div id="companiesTableWrapper">
+        <div class="tableWrapper">
             @include('super-admin.company.table', ['companies' => $companies])
         </div>
 

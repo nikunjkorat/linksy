@@ -42,4 +42,14 @@ class Company extends Model
     {
         return $this->users()->where('role', User::ROLE_MEMBER);
     }
+
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function pendingInvitations()
+    {
+        return $this->invitations()->whereNull('accepted_at');
+    }
 }

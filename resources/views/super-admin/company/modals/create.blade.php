@@ -14,15 +14,21 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Company Name</label>
-                        <input type="text" name="name" class="form-control">
+                        <input type="text" name="name" class="form-control" placeholder="Enter company name">
                         <div class="invalid-feedback" data-error="name"></div>
                     </div>
 
                     <div id="adminInviteSection">
 
                         <div class="mb-3">
+                            <label class="form-label">Admin Name</label>
+                            <input type="text" name="admin_name" id="admin_name" class="form-control" placeholder="Enter admin name">
+                            <div class="invalid-feedback" data-error="admin_name"></div>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Admin Email</label>
-                            <input type="email" name="admin_email" id="admin_email" class="form-control">
+                            <input type="email" name="admin_email" id="admin_email" class="form-control" placeholder="Enter admin email">
                             <div class="invalid-feedback" data-error="admin_email"></div>
                         </div>
 

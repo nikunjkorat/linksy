@@ -17,12 +17,22 @@
                 @csrf
 
                 <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Admin Name</label>
+                        <input type="text"
+                               name="name"
+                               class="form-control"
+                               placeholder="Enter admin name"
+                               required>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Admin Email</label>
                         <input type="email"
                                name="email"
                                class="form-control"
-                               placeholder="admin@example.com"
+                               placeholder="Enter admin email"
                                required>
                     </div>
 

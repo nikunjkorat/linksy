@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Http\Requests\SuperAdmin\Company;
+namespace App\Http\Requests\Admin\Invitation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class Store extends FormRequest
+class Send extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-
     public function authorize(): bool
     {
-        return true;
+        $user = Auth::user();
+
+        return $user
+            && $user->role === 'admin'
+            && $user->company_id !== null;
     }
 
     /**
@@ -20,14 +24,12 @@ class Store extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:2|max:255|unique:companies,name',
-            'skip_invite' => 'nullable|in:on,off',
-            'admin_email' => 'required_if:skip_invite,off|email',
-            'admin_name' => 'required_if:skip_invite,off|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|in:admin,member',
         ];
     }
 }

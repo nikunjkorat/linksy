@@ -15,13 +15,13 @@
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" placeholder="Enter email address" class="form-control">
                             <div class="invalid-feedback" data-error="email"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control">
+                            <input type="password" placeholder="********" name="password" class="form-control">
                             <div class="invalid-feedback" data-error="password"></div>
                         </div>
 

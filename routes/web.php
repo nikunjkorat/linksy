@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\RedirectByRoleController;
 use App\Http\Controllers\SuperAdmin\CompanyController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
-use App\Http\Controllers\SuperAdmin\InvitationController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -77,10 +78,19 @@ Route::post('/invitations/{token}/complete', [InvitationController::class, 'comp
 
 // Admin routes
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/admin', [AdminDashboardController::class, 'index'])
-        ->name('admin.dashboard');
+    Route::get('/', [AdminDashboardController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('/users', [AdminUserController::class, 'index'])
+            ->name('users.index');
+
+    Route::post('/invitations', [AdminUserController::class, 'inviteUser'])
+            ->name('invitations.store');
 });
 
 // Member routes

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SuperAdmin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuperAdmin\Invitation\Complete;
@@ -74,8 +74,9 @@ class InvitationController extends Controller
         // Update user record
 
         $user->update([
+            'name' => $invite->name,
             'company_id' => $invite->company_id,
-            'role' => 'admin',
+            'role' => $invite->role,
             'email_verified_at' => now(),
         ]);
 
@@ -107,13 +108,12 @@ class InvitationController extends Controller
         // Create user account
 
         $user = User::create([
-            'name' => $validated['name'],
+            'name' => $invite->name,
             'email' => $invite->email,
             'password' => Hash::make($validated['password']),
             'email_verified_at' => now(),
-            'role' => 'admin',
+            'role' => $invite->role,
             'company_id' => $invite->company_id,
-            'email_verified_at' => now(),
         ]);
 
         // Mark invitation as accepted
@@ -141,12 +141,12 @@ class InvitationController extends Controller
         // Fetch all unaccepted, expired invitations
 
         $invitations = Invitation::whereNull('accepted_at')
-            ->isExpired()
+            ->where('expires_at', '>', now())
             ->get();
 
         foreach ($invitations as $invite) {
 
-            if (Hash::check($rawToken, $invite->token)) {
+            if (Hash::check($rawToken, $invite->token) && $invite->company) {
 
                 return $invite;
 

@@ -111,8 +111,9 @@ form.on("submit", function (e) {
         method: "POST",
         data: form.serialize(),
         success(response) {
-            companyModal.hide();
-            loadCompanies(window.location.href);
+            if(response.redirect) {
+                window.location.href = response.redirect;
+            }
         },
         error(xhr) {
             if (xhr.status === 422) {
@@ -147,8 +148,9 @@ $(document).on('click', '#confirmDeleteCompany', function () {
         method: 'DELETE',
         data: form.serialize(),
         success(response) {
-            deleteModal.hide();
-            loadCompanies(window.location.href);
+            if (response.redirect) {
+                window.location.href = response.redirect;
+            }
         },
         complete() {
             btn.prop('disabled', false).text('Delete');
@@ -158,18 +160,20 @@ $(document).on('click', '#confirmDeleteCompany', function () {
 
 // Load Companies List
 
-function loadCompanies(url) {
+function loadTable(url, $this) {
 
-    $('#companiesTableWrapper').addClass('opacity-50');
+    const $table = $this.closest('.tableWrapper');
+
+    $table.addClass('opacity-50');
 
     $.ajax({
         url: url,
         method: 'GET',
         success(html) {
-            $('#companiesTableWrapper').html(html);
+            $table.html(html);
         },
         complete() {
-            $('#companiesTableWrapper').removeClass('opacity-50');
+            $table.removeClass('opacity-50');
         }
     });
 }
@@ -183,7 +187,7 @@ $(document).on('click', '.pagination-link', function (e) {
     const url = $(this).attr('href');
     if (!url) return;
 
-    loadCompanies(url);
+    loadTable(url, $(this));
 
 });
 
@@ -194,14 +198,14 @@ function toggleAdminInviteFields() {
     const skip = $('#skip_invite').is(':checked');
 
     if (skip) {
-        $('#admin_email')
+        $('#admin_email, #admin_name')
             .val('')
             .prop('disabled', true)
             .removeClass('is-invalid');
 
         $('#adminEmailError').text('');
     } else {
-        $('#admin_email').prop('disabled', false);
+        $('#admin_email, #admin_name').prop('disabled', false);
     }
 }
 

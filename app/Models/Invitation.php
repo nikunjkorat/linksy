@@ -8,6 +8,7 @@ class Invitation extends Model
 {
     protected $fillable = [
         'company_id',
+        'name',
         'email',
         'role',
         'token',

@@ -52,7 +52,7 @@ class CompanyController extends Controller
         // Send admin invite unless skipped
 
         if (!$request->boolean('skip_invite') && $request->validated('admin_email')) {
-            $this->createAdminInvitation($company, $request->validated('admin_email'));
+            $this->createAdminInvitation($company, $request->validated('admin_email'), $request->validated('admin_name'));
         }
 
         return response()->json([
@@ -91,7 +91,7 @@ class CompanyController extends Controller
 
     // Helper to create admin invitation
 
-    protected function createAdminInvitation(Company $company, string $email): void
+    protected function createAdminInvitation(Company $company, string $email, string $name): void
     {
 
         // Prevent inviting existing admin
@@ -110,6 +110,7 @@ class CompanyController extends Controller
 
         Invitation::create([
             'company_id' => $company->id,
+            'name' => $name,
             'email' => $email,
             'role' => 'admin',
             'token' => Hash::make($rawToken),
@@ -129,7 +130,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         return redirect()
-            ->route('superadmin.companies.overview.index', $company);
+            ->route('superadmin.companies.overview.index', compact('company'));
     }
 
     // Company Tabs > Overview
@@ -137,23 +138,53 @@ class CompanyController extends Controller
     public function companyOverview(Company $company)
     {
 
-        return view('super-admin.company.tabs.overview');
+        return view('super-admin.company.tabs.overview', compact('company'));
 
     }
 
     // Company Tabs > Admins
 
-    public function companyAdmins(Company $company)
+    public function companyAdmins(Request $request,Company $company)
     {
 
-        $admins = $company->admins()->paginate(10);
+        $admins = $company->admins()
+            ->latest()
+            ->paginate(5, ['*'], 'admins_page');
+
+        $members = $company->members()
+            ->latest()
+            ->paginate(5, ['*'], 'members_page');
 
         $pendingInvites = Invitation::where('company_id', $company->id)
             ->whereNull('accepted_at')
-            ->where('role', 'admin')
-            ->get();
+            ->latest()
+            ->paginate(5, ['*'], 'invites_page');
 
-        return view('super-admin.company.tabs.admins', compact('company', 'admins', 'pendingInvites'));
+        // AJAX partial response
+
+        if ($request->ajax()) {
+
+            if ($request->has('admins_page')) {
+
+                return view('super-admin.company.tabs.tables.active-admins', compact('admins'))->render();
+
+            }
+
+            if ($request->has('members_page')) {
+                return view('super-admin.company.tabs.tables.active-members', compact('members'))->render();
+            }
+
+            if ($request->has('invites_page')) {
+                return view('super-admin.company.tabs.tables.pending-invitations', compact('pendingInvites'))->render();
+            }
+        }
+
+        return view('super-admin.company.tabs.admins', compact(
+            'company',
+            'admins',
+            'members',
+            'pendingInvites'
+        ));
 
     }
 
@@ -207,7 +238,7 @@ class CompanyController extends Controller
 
         // Create invitation (reuse same helper as PRIMARY)
 
-        $this->createAdminInvitation($company, $requestData['email']);
+        $this->createAdminInvitation($company, $requestData['email'], $requestData['name']);
 
         return response()->json([
             'status' => 'success',

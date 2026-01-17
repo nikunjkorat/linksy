@@ -39,7 +39,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('superadmin.companies.admins.*') ? 'active' : '' }}"
                     href="{{ route('superadmin.companies.admins.index', $company) }}">
-                    Admins
+                    Users
                 </a>
             </li>
 
