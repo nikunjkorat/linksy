@@ -44,19 +44,44 @@
                     {{-- Super Admin Links --}}
 
                     @if (auth()->user()?->isSuperAdmin())
-                        <a class="nav-link {{ request()->routeIs('superadmin.companies.*') ? 'active fw-semibold' : '' }}"
-                            href="{{ route('superadmin.companies.index') }}">
-                            Companies
-                        </a>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('superadmin.companies.*') ? 'active fw-semibold' : '' }}"
+                                href="{{ route('superadmin.companies.index') }}">
+                                Companies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('superadmin.links.*') ? 'active fw-semibold' : '' }}"
+                                href="{{ route('superadmin.links.index') }}">
+                                Links
+                            </a>
+                        </li>
                     @endif
 
                     {{-- Admin --}}
 
-                    @if(auth()->user()->isAdmin())
+                    @if (auth()->user()->isAdmin())
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active fw-semibold' : '' }}"
-                               href="{{ route('admin.users.index') }}">
+                                href="{{ route('admin.users.index') }}">
                                 Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.links.*') ? 'active fw-semibold' : '' }}"
+                                href="{{ route('admin.links.index') }}">
+                                Links
+                            </a>
+                        </li>
+                    @endif
+
+                    {{-- Member --}}
+
+                    @if (auth()->user()->isMember())
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('member.links.*') ? 'active fw-semibold' : '' }}"
+                                href="{{ route('member.links.index') }}">
+                                Links
                             </a>
                         </li>
                     @endif

@@ -8,6 +8,7 @@ use App\Http\Controllers\RedirectByRoleController;
 use App\Http\Controllers\SuperAdmin\CompanyController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -66,6 +67,11 @@ Route::middleware(['auth', 'role:super_admin'])
         [CompanyController::class, 'inviteCompanyAdmin']
     )->name('companies.admins.invite');
 
+    // Link Management
+
+    Route::get('/links', [LinkController::class, 'index'])
+        ->name('links.index');
+
 });
 
 // Invitation acceptance
@@ -83,21 +89,48 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
+    // Dashboard
+
     Route::get('/', [AdminDashboardController::class, 'index'])
         ->name('dashboard');
+
+    // User Management
 
     Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users.index');
 
+    // Invitation Management
+
     Route::post('/invitations', [AdminUserController::class, 'inviteUser'])
             ->name('invitations.store');
+
+    // Link Management
+
+    Route::get('/links', [LinkController::class, 'index'])
+        ->name('links.index');
+
+    Route::post('/links', [LinkController::class, 'store'])
+        ->name('links.store');
 });
 
 // Member routes
 
-Route::middleware(['auth', 'role:member'])->group(function () {
+Route::middleware(['auth', 'role:member'])
+    ->prefix('member')
+    ->name('member.')
+    ->group(function () {
 
-    Route::get('/member', [MemberDashboardController::class, 'index'])
-        ->name('member.dashboard');
+    // Dashboard
+
+    Route::get('/', [MemberDashboardController::class, 'index'])
+        ->name('dashboard');
+
+    // Link Management
+
+    Route::get('/links', [LinkController::class, 'index'])
+        ->name('links.index');
+
+    Route::post('/links', [LinkController::class, 'store'])
+        ->name('links.store');
 
 });

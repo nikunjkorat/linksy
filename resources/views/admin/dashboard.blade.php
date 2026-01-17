@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-4">
-    <h2>Welcome {{ auth()->user()->name }}!!</h2>
+    <h2>Welcome Admin</h2>
     <p>Here you can manage company users and shorten links.</p>
 </div>
 @endsection
