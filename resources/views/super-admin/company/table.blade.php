@@ -5,9 +5,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Admins</th>
-                <th>Members</th>
                 <th>Users</th>
+                <th>Total Generated URLs</th>
+                <th>Total URL Hits</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -15,13 +15,14 @@
             @foreach ($companies as $company)
                 <tr data-uid="{{ $company->uid }}">
                     <td class="company-name">{{ $company->name }}</td>
-                    <td>{{ $company->admins_count }}</td>
-                    <td>{{ $company->members_count }}</td>
                     <td>{{ $company->users_count }}</td>
+                    <td>{{ $company->short_urls_count ?: 0 }}</td>
+                    <td>{{ $company->total_url_hits ?: 0 }}</td>
                     <td>
                         <button class="btn btn-sm btn-warning edit-company">Edit</button>
                         <button class="btn btn-sm btn-danger delete-company">Delete</button>
-                        <a href="{{ route('superadmin.companies.overview.index', $company) }}" class="btn btn-sm btn-info show-company">Show</a>
+                        <a href="{{ route('superadmin.companies.overview.index', $company) }}"
+                            class="btn btn-sm btn-info show-company">Show</a>
                     </td>
                 </tr>
             @endforeach
@@ -75,7 +76,6 @@
         </nav>
 
     </div>
-
 @else
     <div class="alert alert-info">
         No companies found.

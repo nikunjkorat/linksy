@@ -13,7 +13,7 @@
                 @if (auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
                     <th>Created by</th>
                 @endif
-                <th>Created At</th>
+                <th>Created On</th>
             </tr>
         </thead>
         <tbody>

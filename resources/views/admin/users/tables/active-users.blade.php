@@ -24,8 +24,8 @@
                         @endif
 
                     </td>
-                    <td>{{ $user->total_generated_urls ?? '-' }}</td>
-                    <td>{{ $user->total_url_hits ?? '-' }}</td>
+                    <td>{{ $user->short_urls_count ?: '-' ?? '-' }}</td>
+                    <td>{{ $user->total_url_hits ?: '-' }}</td>
                 </tr>
             @endforeach
         </tbody>

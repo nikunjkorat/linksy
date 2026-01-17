@@ -25,7 +25,8 @@ class CompanyController extends Controller
 
     public function index()
     {
-        $companies = Company::withCount(['users', 'admins', 'members'])
+        $companies = Company::withCount(['users'])
+            ->withUrlStats()
             ->latest()
             ->paginate(5);
 

@@ -24,6 +24,7 @@ class AdminUserController extends Controller
 
         $users = $admin->company
             ->users()
+            ->withUrlStatsVisibleTo($admin)
             ->latest()
             ->paginate(5, ['*'], 'users_page');
 
