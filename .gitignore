@@ -22,3 +22,12 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+*.nginx.conf
+*.sqlite
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.vagrant
+.php-cs-fixer.cache
+.phpstorm.meta.php
+.phpunit-watcher.yml
