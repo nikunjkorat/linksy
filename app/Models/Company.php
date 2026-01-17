@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $fillable = ['name'];
 
@@ -51,5 +52,10 @@ class Company extends Model
     public function pendingInvitations()
     {
         return $this->invitations()->whereNull('accepted_at');
+    }
+
+    public function shortUrls()
+    {
+        return $this->hasMany(ShortUrl::class);
     }
 }
