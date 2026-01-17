@@ -16,7 +16,7 @@
                     with proper access control and security.
                 </p>
                 <div class="mt-4">
-                    <a href="#" class="btn btn-light btn-lg me-2">
+                    <a href="{{ route('login') }}" class="btn btn-light btn-lg me-2">
                         Get Started
                     </a>
                     <a href="#features" class="btn btn-outline-light btn-lg">

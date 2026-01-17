@@ -94,11 +94,13 @@
 
             <ul class="navbar-nav ms-auto">
                 @guest
-                    <li class="nav-item">
-                        <a href="{{ route('login') }}" class="btn btn-primary">
-                            Login
-                        </a>
-                    </li>
+                    @if (!request()->routeIs('login'))
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                Login
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
